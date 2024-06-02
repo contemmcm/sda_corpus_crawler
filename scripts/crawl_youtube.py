@@ -29,13 +29,12 @@ def download_youtube_audio(youtube_url):
                 "preferredquality": "192",
             }
         ],
-        "outtmpl": f".download/{info_dict['id']}.wav",
+        "outtmpl": f".download/{info_dict['id']}.%(ext)s",
     }
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_url])
-
-        audio_file = ydl.prepare_filename(info_dict)
+        audio_file = f".download/{info_dict['id']}.wav"
         return audio_file, info_dict
 
 
