@@ -22,7 +22,14 @@ def download_youtube_audio(youtube_url):
 
     ydl_opts = {
         "format": "bestaudio/best",
-        "outtmpl": f".download/{info_dict['id']}.%(ext)s",
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "wav",
+                "preferredquality": "192",
+            }
+        ],
+        "outtmpl": f".download/{info_dict['id']}.wav",
     }
 
     with YoutubeDL(ydl_opts) as ydl:
