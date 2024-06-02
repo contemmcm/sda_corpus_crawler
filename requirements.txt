@@ -1,0 +1,2 @@
+ffmpeg-python==0.2.0
+transformers @ git+https://github.com/huggingface/transformers.git@96eb06286b63c9c93334d507e632c175d6ba8b28

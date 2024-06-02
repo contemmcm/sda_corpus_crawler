@@ -2,17 +2,12 @@ import os
 
 from glob import glob
 
-import torch
-
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-
 from yt_dlp import YoutubeDL
 
 import pandas as pd
 
 from crawler.models import Document
-
-FFMPEG_BINARY = "./ffmpeg/bin/ffmpeg"
+from crawler.transcribe import transcribe
 
 
 def download_youtube_audio(youtube_url):
@@ -31,55 +26,13 @@ def download_youtube_audio(youtube_url):
                 "preferredquality": "192",
             }
         ],
-        "ffmpeg_location": FFMPEG_BINARY,
-        "outtmpl": f".download/{info_dict['id']}.%(ext)s",
+        "outtmpl": f".download/youtube/{info_dict['id']}.%(ext)s",
     }
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_url])
-        audio_file = f".download/{info_dict['id']}.flac"
+        audio_file = f".download/youtube/{info_dict['id']}.flac"
         return audio_file, info_dict
-
-
-def transcribe(audio_file, opts, lang):
-    """
-    Transcribe audio file
-    """
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-
-    model_id = "openai/whisper-large-v3"
-
-    model = AutoModelForSpeechSeq2Seq.from_pretrained(
-        model_id, torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
-    )
-    model.to(device)
-
-    processor = AutoProcessor.from_pretrained(model_id)
-
-    pipe = pipeline(
-        "automatic-speech-recognition",
-        model=model,
-        tokenizer=processor.tokenizer,
-        feature_extractor=processor.feature_extractor,
-        max_new_tokens=128,
-        chunk_length_s=30,
-        batch_size=16,
-        return_timestamps=True,
-        torch_dtype=torch_dtype,
-        device=device,
-    )
-
-    result = pipe(
-        audio_file, generate_kwargs={"task": "transcribe", "language": f"<|{lang}|>"}
-    )
-
-    return {
-        "url": opts["webpage_url"],
-        "title": opts["title"],
-        "text": result["text"],
-        "lang": lang,
-    }
 
 
 def run():
