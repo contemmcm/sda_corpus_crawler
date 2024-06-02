@@ -1,15 +1,21 @@
+"""
+Crawl audios from sources/audios/*.tsv
+"""
+
 import os
 import hashlib
 
 from glob import glob
+from deepmultilingualpunctuation import PunctuationModel
 
+import pandas as pd
 import requests
 import ffmpeg
 
-import pandas as pd
-
 from crawler.models import Document
 from crawler.transcribe import transcribe
+
+punct = PunctuationModel("kredor/punctuate-all")
 
 
 def download_audio(audio_url):
@@ -45,8 +51,8 @@ def process_audio(url, author, title, lang):
     """
     Process audio file
     """
-    # if Document.objects.filter(url=url).exists():
-    #     return
+    if Document.objects.filter(url=url).exists():
+        return
 
     opts = {
         "webpage_url": url,
@@ -56,6 +62,9 @@ def process_audio(url, author, title, lang):
     faudio = download_audio(url)
     row = transcribe(faudio, opts, lang)
 
+    # restore punctuation
+    punct_restored = punct.restore_punctuation(row["text"])
+
     Document.objects.create(
         url=row["url"],
         title=title,
@@ -63,6 +72,8 @@ def process_audio(url, author, title, lang):
         lang=lang,
         document_type="youtube",
         author_id=author,
+        text_revised=punct_restored,
+        is_review_finished=False,  # needs human validation
     )
 
     return row

@@ -1,6 +1,7 @@
 import os
 
 from glob import glob
+from deepmultilingualpunctuation import PunctuationModel
 
 from yt_dlp import YoutubeDL
 
@@ -8,6 +9,8 @@ import pandas as pd
 
 from crawler.models import Document
 from crawler.transcribe import transcribe
+
+punct = PunctuationModel("kredor/punctuate-all")
 
 
 def download_youtube_audio(youtube_url):
@@ -51,6 +54,10 @@ def run():
 
                 faudio, opts = download_youtube_audio(url)
                 row = transcribe(faudio, opts, lang)
+
+                # restore punctuation
+                punct_restored = punct.restore_punctuation(row["text"])
+
                 rows.append(row)
 
                 # Save intermediate results
@@ -68,6 +75,8 @@ def run():
                     lang=lang,
                     document_type="youtube",
                     author_id=opts["uploader_id"],
+                    text_revised=punct_restored,
+                    is_review_finished=False,  # needs human validation
                 )
 
                 df.to_parquet(fname_out)
