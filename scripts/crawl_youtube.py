@@ -12,6 +12,8 @@ import pandas as pd
 
 from crawler.models import Document
 
+FFMPEG_BINARY = "./ffmpeg/bin/ffmpeg"
+
 
 def download_youtube_audio(youtube_url):
     """
@@ -25,20 +27,21 @@ def download_youtube_audio(youtube_url):
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
-                "preferredcodec": "wav",
+                "preferredcodec": "flac",
                 "preferredquality": "192",
             }
         ],
+        "ffmpeg_location": FFMPEG_BINARY,
         "outtmpl": f".download/{info_dict['id']}.%(ext)s",
     }
 
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_url])
-        audio_file = f".download/{info_dict['id']}.wav"
+        audio_file = f".download/{info_dict['id']}.flac"
         return audio_file, info_dict
 
 
-def transcribe(audio_file, opts):
+def transcribe(audio_file, opts, lang):
     """
     Transcribe audio file
     """
@@ -68,14 +71,14 @@ def transcribe(audio_file, opts):
     )
 
     result = pipe(
-        audio_file, generate_kwargs={"task": "transcribe", "language": "<|pt|>"}
+        audio_file, generate_kwargs={"task": "transcribe", "language": f"<|{lang}|>"}
     )
 
     return {
         "url": opts["webpage_url"],
         "title": opts["title"],
         "text": result["text"],
-        "lang": opts["language"],
+        "lang": lang,
     }
 
 
@@ -85,6 +88,7 @@ def run():
     """
     rows = []
     for fname in glob("sources/youtube/*.urls"):
+        lang = os.path.basename(fname).split("_")[0]
         with open(fname, encoding="utf8") as file:
             urls = [line.strip() for line in file.readlines()]
             for url in urls:
@@ -93,12 +97,13 @@ def run():
                     continue
 
                 faudio, opts = download_youtube_audio(url)
-                row = transcribe(faudio, opts)
+                row = transcribe(faudio, opts, lang)
                 rows.append(row)
 
                 # Save intermediate results
                 df = pd.DataFrame(rows)
-                fname_out = f"data/{opts['language']}/youtube/{opts['uploader_id']}/data.parquet"
+
+                fname_out = f"data/{lang}/youtube/{opts['uploader_id']}/data.parquet"
 
                 # ensure directory exists
                 os.makedirs(os.path.dirname(fname_out), exist_ok=True)
@@ -107,7 +112,7 @@ def run():
                     url=row["url"],
                     title=row["title"],
                     text=row["text"],
-                    lang=row["lang"],
+                    lang=lang,
                     document_type="youtube",
                     author_id=opts["uploader_id"],
                 )

@@ -2,3 +2,5 @@ __pycache__/
 data/
 .download/
 db.sqlite3
+usr/local
+ffmpeg/
