@@ -4,12 +4,15 @@ Transcribe audio files
 
 import torch
 
+from decouple import config
+
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 MODEL_ID = "openai/whisper-large-v3"
 TORCH_DTYPE = torch.float16 if torch.cuda.is_available() else torch.float32
+DEVICE = config("DEVICE", default="cuda")
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device(DEVICE)
 model = AutoModelForSpeechSeq2Seq.from_pretrained(
     MODEL_ID, torch_dtype=TORCH_DTYPE, low_cpu_mem_usage=True, use_safetensors=True
 )
