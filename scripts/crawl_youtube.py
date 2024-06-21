@@ -80,3 +80,6 @@ def run():
                 )
 
                 df.to_parquet(fname_out)
+
+                # remove audio file
+                os.remove(faudio)
