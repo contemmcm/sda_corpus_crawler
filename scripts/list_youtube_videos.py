@@ -6,47 +6,49 @@ $ python manage.py runscript list_youtube_videos --script-args <channel_id>
 Example:
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @arenadofuturoNT > sources/youtube/pt_@arenadofuturoNT.txt
+    @arenadofuturoNT > sources/youtube/pt_@arenadofuturoNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @EstaEscritoNT > sources/youtube/pt_@EstaEscritoNT.txt
+    @EstaEscritoNT > sources/youtube/pt_@EstaEscritoNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @BibliaFacil > sources/youtube/pt_@BibliaFacil.txt
+    @BibliaFacil > sources/youtube/pt_@BibliaFacil.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @ConsultoriodeFamilia > sources/youtube/pt_@ConsultoriodeFamilia.txt
+    @ConsultoriodeFamilia > sources/youtube/pt_@ConsultoriodeFamilia.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @NTEvidencias > sources/youtube/pt_@NTEvidencias.txt
+    @NTEvidencias > sources/youtube/pt_@NTEvidencias.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @novotempo > sources/youtube/pt_@novotempo.txt
+    @novotempo > sources/youtube/pt_@novotempo.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    c/EscolaBíblicaNT > sources/youtube/pt_EscolaBíblicaNT.txt
+    c/EscolaBíblicaNT > sources/youtube/pt_EscolaBíblicaNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @lugardepaztv > sources/youtube/pt_@lugardepaztv.txt
+    @lugardepaztv > sources/youtube/pt_@lugardepaztv.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    c/FéparaHoje > sources/youtube/pt_FéparaHoje.txt
+    c/FéparaHoje > sources/youtube/pt_FéparaHoje.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @OrigensNT > sources/youtube/pt_@OrigensNT.txt
+    @OrigensNT > sources/youtube/pt_@OrigensNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @ReavivadosporSuaPalavraNT > sources/youtube/pt_@ReavivadosporSuaPalavraNT.txt
+    @ReavivadosporSuaPalavraNT > sources/youtube/pt_@ReavivadosporSuaPalavraNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @NT180graus > sources/youtube/pt_@NT180graus.txt
+    @NT180graus > sources/youtube/pt_@NT180graus.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @RevistaNT > sources/youtube/pt_@RevistaNT.txt
+    @RevistaNT > sources/youtube/pt_@RevistaNT.urls
 
 $ python manage.py runscript list_youtube_videos --script-args \
-    @adventistasbrasil > sources/youtube/pt_@adventistasbrasil.txt
+    @adventistasbrasil > sources/youtube/pt_@adventistasbrasil.urls
 
+$ python manage.py runscript list_youtube_videos --script-args \
+    @DraRosanaAlves > sources/youtube/pt_@DraRosanaAlves.urls
 """
 
 import time
