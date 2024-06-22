@@ -76,6 +76,9 @@ $ python manage.py runscript list_youtube_videos --script-args \
 
 $ python manage.py runscript list_youtube_videos --script-args \
     c/CódigoAbertoNT > sources/youtube/pt_CódigoAbertoNT.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @PastorBullonBR > sources/youtube/pt_@PastorBullonBR.urls
 """
 
 import time
