@@ -43,6 +43,10 @@ $ python manage.py runscript list_youtube_videos --script-args \
 
 $ python manage.py runscript list_youtube_videos --script-args \
     @RevistaNT > sources/youtube/pt_@RevistaNT.txt
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @adventistasbrasil > sources/youtube/pt_@adventistasbrasil.txt
+
 """
 
 import time
