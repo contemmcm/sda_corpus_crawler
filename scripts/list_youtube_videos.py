@@ -49,6 +49,19 @@ $ python manage.py runscript list_youtube_videos --script-args \
 
 $ python manage.py runscript list_youtube_videos --script-args \
     @DraRosanaAlves > sources/youtube/pt_@DraRosanaAlves.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @SaldoExtra > sources/youtube/pt_@SaldoExtra.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @Hiperlinkados > sources/youtube/pt_@Hiperlinkados.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    c/AlémdosFatos > sources/youtube/pt_AlémdosFatos.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @novotemporadio > sources/youtube/pt_@novotemporadio.urls
+
 """
 
 import time
