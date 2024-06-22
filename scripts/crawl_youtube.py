@@ -38,12 +38,13 @@ def download_youtube_audio(youtube_url):
         return audio_file, info_dict
 
 
-def run():
+def run(*args):
     """
     Crawl youtube videos from sources/youtube/*.urls
     """
+    source = args[0] if args else "*.urls"
     rows = []
-    for fname in glob("sources/youtube/*.urls"):
+    for fname in glob(f"sources/youtube/{source}"):
         lang = os.path.basename(fname).split("_")[0]
         with open(fname, encoding="utf8") as file:
             urls = [line.strip() for line in file.readlines()]

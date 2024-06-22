@@ -9,6 +9,7 @@ class Document(models.Model):
     DOCUMENT_TYPES = [
         ("book", "Book"),
         ("youtube", "Youtube Transcript"),
+        ("audio", "Audio Transcript"),
     ]
 
     url = models.URLField(unique=True, db_index=True)
@@ -18,7 +19,7 @@ class Document(models.Model):
     document_type = models.CharField(
         max_length=30, choices=DOCUMENT_TYPES, default="book"
     )
-    author_id = models.CharField(max_length=255)
+    author_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
 
     # For postprocessing
     text_revised = models.TextField(blank=True, null=True)

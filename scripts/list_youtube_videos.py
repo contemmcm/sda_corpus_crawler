@@ -62,6 +62,20 @@ $ python manage.py runscript list_youtube_videos --script-args \
 $ python manage.py runscript list_youtube_videos --script-args \
     @novotemporadio > sources/youtube/pt_@novotemporadio.urls
 
+$ python manage.py runscript list_youtube_videos --script-args \
+    @igrejaunaspsplive streams > sources/youtube/pt_@igrejaunaspsplive.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @igrejaunasp videos > sources/youtube/pt_@igrejaunasp_videos.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @igrejaunasp streams > sources/youtube/pt_@igrejaunasp_stream.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    @LicoesdaBiblia > sources/youtube/pt_@LicoesdaBiblia.urls
+
+$ python manage.py runscript list_youtube_videos --script-args \
+    c/CódigoAbertoNT > sources/youtube/pt_CódigoAbertoNT.urls
 """
 
 import time
@@ -72,7 +86,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-def get_filtered_thumbnail_urls(channel_url):
+def get_filtered_thumbnail_urls(channel_url, path="videos"):
 
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
@@ -80,7 +94,7 @@ def get_filtered_thumbnail_urls(channel_url):
 
     driver = webdriver.Chrome(service=service, options=options)
 
-    driver.get(channel_url + "/videos")
+    driver.get(channel_url + "/" + path)
     time.sleep(5)  # Wait for the JavaScript to load the content
 
     # Scroll down to load more videos
@@ -121,7 +135,8 @@ def run(*args):
 
     # Replace with the URL of the YouTube channel
     channel_url = "https://www.youtube.com/" + args[0]
+    path = args[1] if len(args) > 1 else "videos"
 
-    thumbnail_urls = get_filtered_thumbnail_urls(channel_url)
+    thumbnail_urls = get_filtered_thumbnail_urls(channel_url, path)
     for url in thumbnail_urls:
         print(url)

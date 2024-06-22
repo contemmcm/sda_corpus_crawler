@@ -70,7 +70,7 @@ def process_audio(url, author, title, lang):
         title=title,
         text=row["text"],
         lang=lang,
-        document_type="youtube",
+        document_type="audio",
         author_id=author,
         text_revised=punct_restored,
         is_review_finished=False,  # needs human validation
@@ -81,7 +81,7 @@ def process_audio(url, author, title, lang):
 
 def run():
     """
-    Crawl youtube videos from sources/audios/*.tsv
+    Crawl audios from sources/audios/*.tsv
     """
     rows = []
     for fname in glob("sources/audios/*.tsv"):
