@@ -13,7 +13,7 @@ from crawler.models import Document
 
 
 def parse_text(item):
-    soup = BeautifulSoup(item["content"]["rendered"], "lxml")
+    soup = BeautifulSoup(item["content"]["rendered"], "html.parser")
 
     text = ""
 
