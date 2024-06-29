@@ -10,6 +10,7 @@ class Document(models.Model):
         ("book", "Book"),
         ("youtube", "Youtube Transcript"),
         ("audio", "Audio Transcript"),
+        ("news", "News"),
     ]
 
     url = models.URLField(unique=True, db_index=True)
