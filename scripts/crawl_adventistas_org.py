@@ -29,6 +29,8 @@ def run():
     """
     page = 1
 
+    Document.objects.filter(url__contains="noticias.adventistas.org").delete()
+
     while True:
         url = f"https://noticias.adventistas.org/pt/wp-json/wp/v2/posts?&page={page}"
         response = requests.get(url, timeout=60)
@@ -42,7 +44,7 @@ def run():
 
             text = parse_text(item)
 
-            if "custom_author" in item["acf"] and item["acf"]["custom_author"]:
+            if "custom_author" in item["acf"] and item["acf"]["custom_author"] != "":
                 author = item["acf"]["custom_author"]
             elif "author" in item:
                 author = f"author_{item['author']}"
