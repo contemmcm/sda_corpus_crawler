@@ -53,12 +53,18 @@ def run(*args):
                 if Document.objects.filter(url=url).exists():
                     continue
 
+                is_downloaded = False
+
                 for _ in range(3):
                     try:
                         faudio, opts = download_youtube_audio(url)
+                        is_downloaded = True
                         break
                     except DownloadError:
                         continue
+
+                if not is_downloaded:
+                    continue  # skip this video
 
                 row = transcribe(faudio, opts, lang)
 
