@@ -3,7 +3,7 @@ import os
 from glob import glob
 from deepmultilingualpunctuation import PunctuationModel
 
-from yt_dlp import YoutubeDL
+from yt_dlp import YoutubeDL, DownloadError
 
 import pandas as pd
 
@@ -53,7 +53,13 @@ def run(*args):
                 if Document.objects.filter(url=url).exists():
                     continue
 
-                faudio, opts = download_youtube_audio(url)
+                for _ in range(3):
+                    try:
+                        faudio, opts = download_youtube_audio(url)
+                        break
+                    except DownloadError:
+                        continue
+
                 row = transcribe(faudio, opts, lang)
 
                 # restore punctuation
