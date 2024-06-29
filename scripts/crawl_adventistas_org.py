@@ -44,6 +44,8 @@ def run():
 
             text = parse_text(item)
 
+            print(item["acf"])
+
             if "custom_author" in item["acf"] and item["acf"]["custom_author"] != "":
                 author = item["acf"]["custom_author"]
             elif "author" in item:
