@@ -69,7 +69,11 @@ def run(*args):
                 row = transcribe(faudio, opts, lang)
 
                 # restore punctuation
-                punct_restored = punct.restore_punctuation(row["text"])
+                try:
+                    punct_restored = punct.restore_punctuation(row["text"])
+                except AssertionError as err:
+                    print(f"Error: {err}")
+                    continue
 
                 rows.append(row)
 
