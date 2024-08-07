@@ -74,6 +74,9 @@ def run(*args):
                 except AssertionError as err:
                     print(f"Error: {err}")
                     continue
+                except IndexError as err:
+                    print(f"Error: {err}")
+                    continue
 
                 rows.append(row)
 
