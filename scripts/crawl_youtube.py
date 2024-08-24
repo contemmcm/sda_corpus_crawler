@@ -1,3 +1,19 @@
+"""
+You need to export your YouTube cookies from your web browser. This can be done using a 
+browser extension like EditThisCookie (Chrome) or Cookies.txt (Firefox).
+
+Chrome (EditThisCookie)
+
+1. Install the EditThisCookie extension.
+2. Go to youtube.com.
+3. Click on the extension icon and select "Export" to save your cookies as a .json file.
+
+
+Usage:
+
+$ python manage.py runscript crawl_youtube --script-args *.urls cookies.json
+"""
+
 import os
 
 from glob import glob
@@ -13,14 +29,20 @@ from crawler.transcribe import transcribe
 punct = PunctuationModel("kredor/punctuate-all")
 
 
-def download_youtube_audio(youtube_url):
+def download_youtube_audio(youtube_url, cookies):
     """
     Download audio from youtube video
     """
 
-    info_dict = YoutubeDL().extract_info(youtube_url, download=False)
+    if cookies and not os.path.exists(cookies):
+        cookies = None
+
+    info_dict = YoutubeDL({"cookies": cookies}).extract_info(
+        youtube_url, download=False
+    )
 
     ydl_opts = {
+        "cookies": cookies,
         "format": "bestaudio/best",
         "postprocessors": [
             {
@@ -43,6 +65,8 @@ def run(*args):
     Crawl youtube videos from sources/youtube/*.urls
     """
     source = args[0] if args else "*.urls"
+    cookies = args[1] if len(args) > 1 else None
+
     rows = []
     for fname in glob(f"sources/youtube/{source}"):
         lang = os.path.basename(fname).split("_")[0]
@@ -57,7 +81,7 @@ def run(*args):
 
                 for _ in range(3):
                     try:
-                        faudio, opts = download_youtube_audio(url)
+                        faudio, opts = download_youtube_audio(url, cookies)
                         is_downloaded = True
                         break
                     except DownloadError:
