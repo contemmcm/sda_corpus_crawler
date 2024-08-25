@@ -61,7 +61,7 @@ def run():
     training_args = TrainingArguments(
         output_dir="./gpt2-scratch",
         overwrite_output_dir=True,
-        num_train_epochs=3,
+        num_train_epochs=7,
         per_device_train_batch_size=4,
         save_steps=10_000,
         save_total_limit=2,

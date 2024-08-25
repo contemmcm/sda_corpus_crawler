@@ -20,7 +20,8 @@ def run():
     """
     rows = load_indexes_urls()
 
-    for row in rows:
+    for i, row in enumerate(rows):
+        print(f"{i+1} of {len(rows)}", row["title"])
         download(row)
 
 
@@ -40,7 +41,7 @@ def download(entry):
 
     p_list = article.find_all("p")
 
-    text = "\n\n".join([entry["subtitle"]] + [p.text for p in p_list])
+    text = "\n\n".join([p.text for p in p_list])
 
     Document.objects.get_or_create(
         url=entry["url"],
